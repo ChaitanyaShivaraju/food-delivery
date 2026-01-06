@@ -1,0 +1,30 @@
+<!-- templates/register.html -->
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 80px auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <div style="font-size: 4rem; margin-bottom: 15px;">👤</div>
+        <h2 style="color: #333; font-size: 2rem;">Create Your Account</h2>
+        <p style="color: #666;">Join us and start ordering delicious food!</p>
+    </div>
+    <form method="POST">
+        <div class="form-group">
+            <label>👤 Username:</label>
+            <input type="text" name="username" required placeholder="Choose a username">
+        </div>
+        <div class="form-group">
+            <label>📧 Email:</label>
+            <input type="email" name="email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+            <label>🔒 Password:</label>
+            <input type="password" name="password" required placeholder="Create a secure password">
+        </div>
+        <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem;">Register Now</button>
+    </form>
+    <p style="margin-top: 20px; text-align: center; color: #666;">Already have an account? <a href="/login" style="color: #667eea; font-weight: 600;">Login here</a></p>
+</div>
+{% endblock %}
