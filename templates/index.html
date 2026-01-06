@@ -1,0 +1,38 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Menu - Food Delivery{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="food-emoji">🍕🍔🍜🍰</div>
+    <h1>Delicious Food, Delivered Fast!</h1>
+    <p>Order your favorite meals from the comfort of your home</p>
+</div>
+
+<h2 style="color: white; text-align: center; margin: 40px 0 30px 0; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Our Menu</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-top: 20px;">
+    {% for item in menu_items %}
+    <div class="card" style="text-align: center; position: relative; overflow: hidden;">
+        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, {% if item.category == 'Pizza' %}#f093fb 0%, #f5576c 100%{% elif item.category == 'Burgers' %}#fa709a 0%, #fee140 100%{% elif item.category == 'Salads' %}#30cfd0 0%, #330867 100%{% else %}#a8edea 0%, #fed6e3 100%{% endif %}); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 5rem;">
+            {% if item.category == 'Pizza' %}🍕
+            {% elif item.category == 'Burgers' %}🍔
+            {% elif item.category == 'Salads' %}🥗
+            {% elif item.category == 'Pasta' %}🍝
+            {% else %}🍽️{% endif %}
+        </div>
+        <h3 style="color: #333; margin-bottom: 10px;">{{ item.name }}</h3>
+        <p style="color: #666; margin-bottom: 15px;">{{ item.description }}</p>
+        <p style="font-size: 1.5rem; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;">${{ "%.2f"|format(item.price) }}</p>
+        <div style="display: inline-block; padding: 5px 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 20px; font-size: 0.9rem; margin-bottom: 15px;">{{ item.category }}</div>
+        <br>
+        {% if session.user_id %}
+            <a href="/add_to_cart/{{ item.id }}" class="btn">Add to Cart 🛒</a>
+        {% else %}
+            <a href="/login" class="btn">Login to Order</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
