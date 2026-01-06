@@ -1,0 +1,50 @@
+<!-- templates/orders.html -->
+{% extends "base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin: 40px 0;">
+    <div style="font-size: 4rem; margin-bottom: 15px;">📦</div>
+    <h2 style="color: white; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">My Orders</h2>
+</div>
+
+{% if orders %}
+    {% for order in orders %}
+    <div class="card" style="border-left: 5px solid {% if order.status == 'delivered' %}#38ef7d{% elif order.status == 'preparing' %}#f5576c{% elif order.status == 'cancelled' %}#999{% else %}#667eea{% endif %};">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <h3 style="color: #333; margin-bottom: 5px;">Order #{{ order.id }}</h3>
+                <p style="color: #666; font-size: 0.9rem;">📅 {{ order.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="display: inline-block; padding: 8px 20px; background: {% if order.status == 'delivered' %}linear-gradient(135deg, #11998e 0%, #38ef7d 100%){% elif order.status == 'preparing' %}linear-gradient(135deg, #f093fb 0%, #f5576c 100%){% elif order.status == 'cancelled' %}linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%){% else %}linear-gradient(135deg, #667eea 0%, #764ba2 100%){% endif %}; color: white; border-radius: 20px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">
+                    {{ order.status }}
+                </div>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #667eea; margin-top: 10px;">${{ "%.2f"|format(order.total_amount) }}</p>
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 10px;">
+            <h4 style="color: #333; margin-bottom: 15px;">📋 Order Items:</h4>
+            <ul style="list-style: none;">
+                {% for item in order.items %}
+                <li style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; color: #333;">{{ item.menu_item.name }} <span style="color: #667eea;">x {{ item.quantity }}</span></span>
+                    <span style="font-weight: 600; color: #667eea;">${{ "%.2f"|format(item.price * item.quantity) }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card" style="text-align: center; padding: 60px 20px;">
+        <div style="font-size: 5rem; margin-bottom: 20px;">📦</div>
+        <h3 style="color: #666; margin-bottom: 20px;">No orders yet</h3>
+        <p style="color: #999; margin-bottom: 30px;">Start ordering delicious food now!</p>
+        <a href="/" class="btn">Browse Menu 🍕</a>
+    </div>
+{% endif %}
+{% endblock %}
+
