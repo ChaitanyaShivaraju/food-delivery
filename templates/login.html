@@ -1,0 +1,30 @@
+<!-- templates/login.html -->
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 80px auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <div style="font-size: 4rem; margin-bottom: 15px;">🔐</div>
+        <h2 style="color: #333; font-size: 2rem;">Welcome Back!</h2>
+        <p style="color: #666;">Login to continue ordering</p>
+    </div>
+    <form method="POST">
+        <div class="form-group">
+            <label>👤 Username:</label>
+            <input type="text" name="username" required placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label>🔒 Password:</label>
+            <input type="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem;">Login</button>
+    </form>
+    <p style="margin-top: 20px; text-align: center; color: #666;">Don't have an account? <a href="/register" style="color: #667eea; font-weight: 600;">Register here</a></p>
+    <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 10px; text-align: center;">
+        <p style="color: #333; font-size: 0.9rem; font-weight: 600;">🎭 Demo Admin Access</p>
+        <p style="color: #666; font-size: 0.85rem;">username: <strong>admin</strong> | password: <strong>admin123</strong></p>
+    </div>
+</div>
+{% endblock %}
