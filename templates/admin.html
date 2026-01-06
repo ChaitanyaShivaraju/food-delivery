@@ -1,0 +1,104 @@
+<!-- templates/admin.html -->
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin: 40px 0;">
+    <div style="font-size: 4rem; margin-bottom: 15px;">⚙️</div>
+    <h2 style="color: white; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Admin Dashboard</h2>
+</div>
+
+<div class="card">
+    <h3 style="color: #333; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;"><span style="font-size: 2rem;">➕</span> Add New Menu Item</h3>
+    <form method="POST" action="/admin/add_item" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="name" required placeholder="e.g., Margherita Pizza">
+            </div>
+            <div class="form-group">
+                <label>Price:</label>
+                <input type="number" name="price" step="0.01" required placeholder="9.99">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description:</label>
+            <textarea name="description" rows="3" placeholder="Describe the delicious dish..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Category:</label>
+            <input type="text" name="category" required placeholder="e.g., Pizza, Burgers, Salads">
+        </div>
+        <button type="submit" class="btn">Add Item 🍽️</button>
+    </form>
+</div>
+
+<div class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <h3 style="color: white; display: flex; align-items: center; gap: 10px;"><span style="font-size: 2rem;">🍽️</span> All Menu Items</h3>
+    </div>
+    <table style="margin: 0;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 5px 12px; border-radius: 15px; font-weight: 600;">{{ item.id }}</span></td>
+                <td style="font-weight: 600;">{{ item.name }}</td>
+                <td style="color: #667eea; font-weight: 600;">${{ "%.2f"|format(item.price) }}</td>
+                <td><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 5px 15px; border-radius: 15px; font-size: 0.85rem;">{{ item.category }}</span></td>
+                <td>{{ '✅ Yes' if item.available else '❌ No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 25px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+        <h3 style="color: white; display: flex; align-items: center; gap: 10px;"><span style="font-size: 2rem;">📦</span> All Orders</h3>
+    </div>
+    <table style="margin: 0;">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 5px 12px; border-radius: 15px; font-weight: 600;">#{{ order.id }}</span></td>
+                <td style="font-weight: 600;">👤 {{ order.user.username }}</td>
+                <td style="color: #11998e; font-weight: 600; font-size: 1.1rem;">${{ "%.2f"|format(order.total_amount) }}</td>
+                <td><span style="padding: 5px 15px; border-radius: 15px; font-weight: 600; font-size: 0.85rem; background: {% if order.status == 'delivered' %}#38ef7d{% elif order.status == 'preparing' %}#f5576c{% elif order.status == 'cancelled' %}#999{% else %}#667eea{% endif %}; color: white;">{{ order.status }}</span></td>
+                <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <form method="POST" action="/admin/update_order/{{ order.id }}" style="display: flex; gap: 10px; align-items: center;">
+                        <select name="status" style="padding: 8px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;">
+                            <option value="pending">⏳ Pending</option>
+                            <option value="preparing">🍳 Preparing</option>
+                            <option value="delivered">✅ Delivered</option>
+                            <option value="cancelled">❌ Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
